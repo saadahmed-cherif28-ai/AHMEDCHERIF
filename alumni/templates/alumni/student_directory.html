@@ -1,0 +1,42 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Annuaire Alumni | Alumni EIGSICA</title>
+    <link rel="stylesheet" href="{% static 'alumni/dashboard.css' %}">
+  </head>
+  <body class="login-page">
+    <main class="profile-card directory-page">
+{% include "alumni/_brand.html" %}
+      <p class="eyebrow">EIGSICA · ESPACE ÉTUDIANT</p>
+      <h1>Annuaire Alumni</h1>
+      <p class="muted">Recherchez les profils publiés et demandez une mise en relation.</p>
+      <form method="get" class="profile-form directory-search">
+        <div class="form-field"><label for="id_q">Recherche</label><input id="id_q" name="q" value="{{ query }}" placeholder="Nom ou filière"></div>
+        <div class="form-field"><label for="id_program">Filière</label><select id="id_program" name="program"><option value="">Toutes les filières</option>{% for value, label in programs %}<option value="{{ value }}"{% if selected_program == value|stringformat:'s' %} selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+        <div class="form-field"><label for="id_city">Ville</label><input id="id_city" name="city" value="{{ city }}" placeholder="Casablanca"></div>
+        <button class="button button-primary" type="submit">Rechercher</button>
+      </form>
+      <div class="directory-grid">
+        {% for profile in profiles %}
+          <article class="directory-card">
+            <div class="directory-avatar">{{ profile.first_name|first }}{{ profile.last_name|first }}</div>
+            <div class="directory-card-body">
+              <span class="badge badge-validated">Promotion {{ profile.graduation_year }}</span>
+              <h2>{{ profile.first_name }} {{ profile.last_name }}</h2>
+              <p>{{ profile.study_program.name }}</p>
+              <small>{% if profile.location %}{{ profile.location.city }}{% else %}Localisation non renseignée{% endif %}</small>
+              <div class="directory-actions"><a class="button button-secondary" href="{% url 'alumni:public-profile' profile.id %}">Voir le profil</a><a class="button button-primary" href="{% url 'alumni:student-contact' profile.id %}">Contacter</a></div>
+            </div>
+          </article>
+        {% empty %}
+          <p class="muted">Aucun profil publié ne correspond à la recherche.</p>
+        {% endfor %}
+      </div>
+      <a class="back-link" href="/">Retour à l’accueil</a>
+    </main>
+  </body>
+</html>
+<script src="{% static 'alumni/theme.js' %}"></script>

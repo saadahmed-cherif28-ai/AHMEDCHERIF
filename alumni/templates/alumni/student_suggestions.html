@@ -1,0 +1,15 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Suggestions Alumni | Alumni EIGSICA</title><link rel="stylesheet" href="{% static 'alumni/dashboard.css' %}"></head>
+  <body class="login-page">
+    <main class="profile-card directory-page">
+      <header class="space-header"><a class="brand-mark" href="/" aria-label="Accueil">A</a><div><p class="eyebrow">EIGSICA · ESPACE ÉTUDIANT</p><p class="space-kicker">Découvrir le réseau</p></div><form method="post" action="{% url 'alumni:logout' %}">{% csrf_token %}<button class="text-button" type="submit">Se déconnecter</button></form></header>
+      <h1>Suggestions Alumni</h1><p class="muted">Trouvez un profil publié correspondant à votre recherche.</p>
+      <form method="get" class="profile-form directory-search"><div class="form-field"><label for="id_q">Nom ou filière</label><input id="id_q" name="q" value="{{ query }}" placeholder="Ex. systèmes d’information"></div><button class="button button-primary" type="submit">Rechercher</button></form>
+      <div class="directory-grid">{% for profile in profiles %}<article class="directory-card"><div class="directory-avatar">{{ profile.first_name|first }}{{ profile.last_name|first }}</div><div class="directory-card-body"><span class="badge badge-validated">Promotion {{ profile.graduation_year }}</span><h2>{{ profile.first_name }} {{ profile.last_name }}</h2><p>{{ profile.study_program.name }}</p><small>{% if profile.location %}{{ profile.location.city }}{% else %}Localisation non renseignée{% endif %}</small><div class="directory-actions"><a class="button button-secondary" href="{% url 'alumni:public-profile' profile.id %}">Voir le profil</a><a class="button button-primary" href="{% url 'alumni:student-contact' profile.id %}">Contacter</a></div></div></article>{% empty %}<p class="muted">Aucune suggestion trouvée.</p>{% endfor %}</div>
+      <a class="back-link" href="{% url 'alumni:student-directory' %}">Annuaire complet</a>
+    </main>
+  </body>
+</html>
+<script src="{% static 'alumni/theme.js' %}"></script>

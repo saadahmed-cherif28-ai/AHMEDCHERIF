@@ -1,0 +1,24 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Alumni EIGSICA</title>
+    <link rel="stylesheet" href="{% static 'alumni/dashboard.css' %}">
+  </head>
+  <body class="login-page">
+    <main class="login-card">
+{% include "alumni/_brand.html" with brand_href=hello_url %}
+      <p class="eyebrow">EIGSICA · RÉSEAU ALUMNI</p>
+      <h1>Alumni EIGSICA</h1>
+      <p class="muted">Faire vivre le réseau alumni, garder le contact et suivre les parcours des diplômés.</p>
+      <p class="muted">Découvrez les parcours, retrouvez les alumni et gardez le contact avec le réseau EIGSICA.</p>
+      <div class="home-actions">
+        <a class="button button-primary" href="{% url 'alumni:login' %}">Se connecter</a>
+        <a class="button button-secondary" href="{% url 'alumni:student-directory' %}">Voir l’annuaire</a>
+      </div>
+    </main>
+    <script src="{% static 'alumni/theme.js' %}"></script>
+  </body>
+</html>

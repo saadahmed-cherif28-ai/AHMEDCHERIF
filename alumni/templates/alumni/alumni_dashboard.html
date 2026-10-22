@@ -1,0 +1,18 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Mon espace Alumni | Alumni EIGSICA</title><link rel="stylesheet" href="{% static 'alumni/dashboard.css' %}"></head>
+  <body class="login-page">
+    <main class="profile-card alumni-space">
+      <header class="space-header"><a class="brand-mark" href="/" aria-label="Accueil">A</a><div><p class="eyebrow">EIGSICA · ESPACE ALUMNI</p><p class="space-kicker">Tableau personnel</p></div><form method="post" action="{% url 'alumni:logout' %}">{% csrf_token %}<button class="text-button" type="submit">Se déconnecter</button></form></header>
+      <h1>Mon espace Alumni</h1>
+      {% if profile %}
+        <p class="muted">Bienvenue {{ profile.first_name }} {{ profile.last_name }}. Voici l’activité de votre profil publié.</p>
+        <div class="metrics-grid compact-metrics"><article class="metric-card"><p class="metric-value">{{ view_count }}</p><h2>Consultations du profil</h2><p class="metric-foot">Visites enregistrées</p></article><article class="metric-card"><p class="metric-value">{{ contact_requests|length }}</p><h2>Demandes de contact</h2><p class="metric-foot">Demandes récentes</p></article></div>
+        <section class="profile-summary viewer-panel" aria-labelledby="viewers-title"><div class="panel-heading"><div><h2 id="viewers-title">Qui a consulté votre profil ?</h2><p class="muted">Les visiteurs connectés sont identifiés.</p></div><span class="badge badge-validated">Confidentiel</span></div>{% for view in profile_views %}<p class="viewer-row"><span class="viewer-dot"></span><span>{% if view.viewer_user %}{{ view.viewer_user.email }}{% else %}Visiteur non connecté{% endif %}</span><time>{{ view.viewed_at|date:"d/m/Y H:i" }}</time></p>{% empty %}<p>Aucune consultation pour le moment.</p>{% endfor %}</section>
+        <div class="page-actions"><a class="button button-primary" href="{% url 'alumni:profile' %}">Modifier mon profil</a><a class="button button-secondary" href="{% url 'alumni:hello' %}">Accueil</a></div>
+      {% else %}<p class="muted">Cet espace est disponible pour les comptes Alumni.</p>{% endif %}
+    </main>
+    <script src="{% static 'alumni/theme.js' %}"></script>
+  </body>
+</html>
