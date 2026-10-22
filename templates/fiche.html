@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ profil.first_name }} {{ profil.last_name }} - SI Alumni EIGSI</title>
+</head>
+<body>
+  <h1>{{ profil.first_name }} {{ profil.last_name }}</h1>
+  <ul>
+    <li>Promotion : {{ profil.graduation_year }}</li>
+    <li>Filière : {{ profil.program }}</li>
+    <li>Ville : {{ profil.city }}</li>
+    <li>Pays : {{ profil.country }}</li>
+    <li>E-mail : <a href="mailto:{{ email }}">{{ email }}</a></li>
+  </ul>
+  <p><a href="{{ url_for('annuaire') }}">Retour à l'annuaire</a></p>
+</body>
+</html>

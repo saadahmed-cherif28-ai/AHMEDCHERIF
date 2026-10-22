@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tableau de bord - SI Alumni EIGSI</title>
+</head>
+<body>
+  <h1>Tableau de bord de pilotage</h1>
+  <p>Profils validés : {{ total }} (sur {{ diplomes_cibles }} diplômés ciblés, valeur provisoire)</p>
+
+  <table border="1" cellpadding="6">
+    <tr>
+      <th>Indicateur</th>
+      <th>Valeur</th>
+      <th>Objectif à 6 mois</th>
+    </tr>
+    <tr>
+      <td>Taux d'alumni recensés</td>
+      <td>{{ kpi.recenses }} %</td>
+      <td>≥ 70 %</td>
+    </tr>
+    <tr>
+      <td>Taux de profils complets</td>
+      <td>{{ kpi.completes }} %</td>
+      <td>≥ 85 %</td>
+    </tr>
+    <tr>
+      <td>Taux de profils à jour (moins de 12 mois)</td>
+      <td>{{ kpi.a_jour }} %</td>
+      <td>≥ 75 %</td>
+    </tr>
+    <tr>
+      <td>Délai médian de validation</td>
+      <td>{% if kpi.delai is not none %}{{ kpi.delai }} jour(s){% else %}—{% endif %}</td>
+      <td>≤ 3 jours</td>
+    </tr>
+  </table>
+
+  <p><a href="{{ url_for('espace_direction') }}">Retour à mon espace</a></p>
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ titre }} - SI Alumni EIGSI</title>
+</head>
+<body>
+  <h1>{{ titre }}</h1>
+  <p>{{ message }}</p>
+
+  {% for message in get_flashed_messages() %}
+    <p style="color: green;">{{ message }}</p>
+  {% endfor %}
+
+  <ul>
+    {% if current_user.role == 'ALUMNI' %}
+      <li><a href="{{ url_for('profil') }}">Mon profil</a></li>
+    {% elif current_user.role == 'SERVICE' %}
+      <li><a href="{{ url_for('validation') }}">Validation des profils</a></li>
+    {% elif current_user.role == 'STUDENT' %}
+      <li><a href="{{ url_for('annuaire') }}">Annuaire des alumni</a></li>
+    {% elif current_user.role in ['DIRECTION', 'ADMIN'] %}
+      <li><a href="{{ url_for('tableau_de_bord') }}">Tableau de bord</a></li>
+    {% endif %}
+  </ul>
+
+  <p>Connecté : {{ current_user.email }} (rôle {{ current_user.role }})</p>
+  <p><a href="{{ url_for('logout') }}">Se déconnecter</a></p>
+</body>
+</html>

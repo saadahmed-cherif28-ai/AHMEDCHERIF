@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - SI Alumni EIGSI</title>
+</head>
+<body>
+  <h1>Connexion</h1>
+
+  {% for message in get_flashed_messages() %}
+    <p>{{ message }}</p>
+  {% endfor %}
+
+  {% if error %}
+    <p style="color: red;">{{ error }}</p>
+  {% endif %}
+
+  <form method="post" action="{{ url_for('login') }}">
+    <p>
+      <label>E-mail<br>
+        <input type="email" name="email" value="{{ email }}" required>
+      </label>
+    </p>
+    <p>
+      <label>Mot de passe<br>
+        <input type="password" name="password" required>
+      </label>
+    </p>
+    <button type="submit">Se connecter</button>
+  </form>
+</body>
+</html>

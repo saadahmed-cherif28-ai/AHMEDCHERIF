@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Annuaire - SI Alumni EIGSI</title>
+</head>
+<body>
+  <h1>Annuaire des alumni</h1>
+
+  <form method="get" action="{{ url_for('annuaire') }}">
+    <p>
+      <label>Promotion<br>
+        <input type="number" name="promotion" value="{{ filtres.promotion }}">
+      </label>
+      <label>Filière<br>
+        <select name="filiere">
+          <option value="">Toutes</option>
+          {% for f in filieres %}
+            <option value="{{ f }}" {% if filtres.filiere == f %}selected{% endif %}>{{ f }}</option>
+          {% endfor %}
+        </select>
+      </label>
+      <label>Ville<br>
+        <input type="text" name="ville" value="{{ filtres.ville }}">
+      </label>
+      <label>Pays<br>
+        <input type="text" name="pays" value="{{ filtres.pays }}">
+      </label>
+    </p>
+    <button type="submit">Rechercher</button>
+    <a href="{{ url_for('annuaire') }}">Effacer les filtres</a>
+  </form>
+
+  {% if resultats %}
+    <p>{{ resultats|length }} résultat(s)</p>
+    <ul>
+      {% for p in resultats %}
+        <li>
+          <a href="{{ url_for('fiche', profile_id=p.id) }}">{{ p.first_name }} {{ p.last_name }}</a>
+          ({{ p.graduation_year }} - {{ p.program }}, {{ p.city }}, {{ p.country }})
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Aucun alumni ne correspond à ces critères. Modifiez la recherche.</p>
+  {% endif %}
+
+  <p><a href="{{ url_for('espace_etudiant') }}">Retour à mon espace</a></p>
+</body>
+</html>
