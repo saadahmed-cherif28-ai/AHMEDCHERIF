@@ -16,6 +16,7 @@ urlpatterns = [
     path("profil/", views.alumni_profile, name="profile"),
     path("service/", views.service_validation_queue, name="service-queue"),
     path("service/profil/<uuid:profile_id>/", views.service_review_profile, name="service-review"),
+    path("service/profil/<uuid:profile_id>/verifier/", views.service_linkedin_verification, name="service-linkedin-verification"),
     path("annuaire/", views.student_directory, name="student-directory"),
     path("suggestions/", views.student_suggestions, name="student-suggestions"),
     path("annuaire/profil/<uuid:profile_id>/", views.public_profile, name="public-profile"),

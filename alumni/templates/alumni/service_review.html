@@ -8,6 +8,7 @@
       <h1>{{ profile.first_name }} {{ profile.last_name }}</h1><p class="muted">{{ profile.student_number }} · {{ profile.study_program.name }}</p>
       <div class="profile-summary"><div class="review-facts"><p><strong>Localisation</strong><span>{% if profile.location %}{{ profile.location }}{% else %}Non renseignée{% endif %}</span></p><p><strong>Situation</strong><span>{{ profile.get_employment_status_display }}</span></p><p><strong>Expériences</strong><span>{{ profile.experiences.count }}</span></p><p><strong>Consentement actif</strong><span class="{% if consent_active %}text-success{% else %}text-danger{% endif %}">{% if consent_active %}Oui{% else %}Non{% endif %}</span></p></div></div>
       <form method="post" class="profile-form">{% csrf_token %}<div class="form-field">{{ form.decision.label_tag }}{{ form.decision }}</div><div class="form-field">{{ form.comment.label_tag }}{{ form.comment }}</div>{% for error in form.errors.values %}<p class="field-error">{{ error }}</p>{% endfor %}<button class="button button-primary" type="submit">Enregistrer la décision</button></form>
+      <a class="back-link" href="{% url 'alumni:service-linkedin-verification' profile.id %}">Vérifier avec LinkedIn</a>
       <a class="back-link" href="{% url 'alumni:service-queue' %}">Retour à la file</a>
     </main>
   </body>

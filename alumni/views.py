@@ -434,3 +434,37 @@ def direction_dashboard(request):
 			"recent_profiles": recent_profiles,
 		},
 	)
+
+
+@login_required
+def service_linkedin_verification(request, profile_id):
+	if request.user.role != AppUser.Role.SERVICE_ALUMNI:
+		raise PermissionDenied
+	from .verification import verifier
+
+	profile = AlumniProfile.objects.select_related("study_program").get(pk=profile_id)
+	resultat = None
+	erreur = None
+	if request.method == "POST":
+		texte = request.POST.get("linkedin_text", "").strip()
+		if not texte:
+			erreur = "Collez le texte du profil LinkedIn avant de vérifier."
+		else:
+			resultat = verifier(profile, texte)
+			# Seul le résultat est tracé : le texte LinkedIn n'est jamais enregistré
+			AuditLog.objects.create(
+				actor_user=request.user,
+				alumni_profile=profile,
+				action="linkedin_verification",
+				details=f"{resultat['libelle']} ({resultat['score']} %)",
+			)
+	return render(
+		request,
+		"alumni/service_linkedin_verification.html",
+		{
+			"profile": profile,
+			"resultat": resultat,
+			"erreur": erreur,
+			"form": ValidationDecisionForm(),
+		},
+	)

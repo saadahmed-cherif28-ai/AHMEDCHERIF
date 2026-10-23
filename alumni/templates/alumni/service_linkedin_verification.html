@@ -1,0 +1,48 @@
+{% load static %}
+<!doctype html>
+<html lang="fr">
+  <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Vérification LinkedIn | Alumni EIGSICA</title><link rel="stylesheet" href="{% static 'alumni/dashboard.css' %}"></head>
+  <body class="login-page">
+    <main class="profile-card review-page">
+      <header class="space-header"><a class="brand-mark" href="/" aria-label="Accueil">A</a><div><p class="eyebrow">SERVICE ALUMNI · CONTRÔLE</p><p class="space-kicker">Vérification LinkedIn</p></div></header>
+
+      <h1>{{ profile.first_name }} {{ profile.last_name }}</h1>
+      <p class="muted">{{ profile.student_number }} · {{ profile.study_program.name }} · promotion {{ profile.graduation_year }}</p>
+
+      <p class="muted">Collez ci-dessous le texte du profil LinkedIn, copié à la main. Il est analysé pour cette vérification uniquement : il n'est pas enregistré.</p>
+
+      <form method="post" class="profile-form">{% csrf_token %}
+        <div class="form-field">
+          <label for="linkedin_text">Texte du profil LinkedIn</label>
+          <textarea id="linkedin_text" name="linkedin_text" rows="8" required></textarea>
+        </div>
+        {% if erreur %}<p class="error">{{ erreur }}</p>{% endif %}
+        <button type="submit">Vérifier</button>
+      </form>
+
+      {% if resultat %}
+        <section class="verification-result" aria-live="polite">
+          <h2>Résultat : {{ resultat.libelle }}</h2>
+          <p><strong>Score de confiance : {{ resultat.score }} %</strong></p>
+          <ul>
+            {% for c in resultat.criteres %}
+              <li><strong>{{ c.nom|capfirst }} : {{ c.libelle }}</strong><br>{{ c.detail }}</li>
+            {% endfor %}
+          </ul>
+          <p><strong>Recommandation :</strong> {{ resultat.recommandation }}</p>
+        </section>
+
+        <h2>Décision du service</h2>
+        <p class="muted">La décision reste la vôtre. Elle est enregistrée avec votre nom et la date.</p>
+        <form method="post" action="{% url 'alumni:service-review' profile.id %}" class="profile-form">{% csrf_token %}
+          <div class="form-field">{{ form.decision.label_tag }}{{ form.decision }}</div>
+          <div class="form-field">{{ form.comment.label_tag }}{{ form.comment }}</div>
+          <button type="submit">Enregistrer la décision</button>
+        </form>
+      {% endif %}
+
+      <a class="back-link" href="{% url 'alumni:service-review' profile.id %}">Retour à la revue du profil</a>
+    </main>
+  </body>
+</html>
+<script src="{% static 'alumni/theme.js' %}"></script>
